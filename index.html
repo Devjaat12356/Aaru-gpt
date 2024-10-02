@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+            padding: 20px; /* Added padding for better mobile/tablet experience */
+        }
+
+        /* Background with heartbeat animation */
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://img.freepik.com/free-vector/white-heart-pink-background_78370-4945.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727654400&semt=ais_hybrid') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(8px);
+            animation: heartbeat-bg 1.5s infinite;
+            z-index: -1;
+        }
+
+        @keyframes heartbeat-bg {
+            0%, 100% {
+                transform: scale(1);
+            }
+            14%, 28% {
+                transform: scale(1.02);
+            }
+        }
+
+        /* Pop-up style */
+        .popup {
+            position: relative; /* Changed from fixed to relative */
+            margin: auto; /* Centering */
+            background: #FFD4DB;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            width: 90%; /* Changed to 90% for better mobile/tablet sizing */
+            max-width: 500px; /* Increased max-width for tablet experience */
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .popup h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: gray;
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            font-size: 18px;
+            font-weight: bold;
+            color: gray;
+            margin-bottom: 20px;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        .popup button:hover {
+            background-color: #ff85a2;
+        }
+
+        /* Pop-up for the angry response */
+        .gif-popup img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        /* Cartoon note popup */
+        .note-popup {
+            width: 90%; /* Same as popup */
+            max-width: 500px; /* Increased max-width for tablet experience */
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .note-popup img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Emoji animations */
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            14%, 28% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes flower-animation {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes knife-shake {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .heartbeat {
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .flower {
+            display: inline-block;
+            animation: flower-animation 1s infinite;
+        }
+
+        .knife {
+            display: inline-block;
+            animation: knife-shake 0.5s infinite;
+        }
+
+        /* Heartbeat animation for the 🫀 emoji */
+        .heartbeat-fast {
+            display: inline-block;
+            animation: heartbeat-fast 0.8s infinite;
+        }
+
+        @keyframes heartbeat-fast {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25%, 75% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <!-- First Pop-up -->
+    <div id="popup" class="popup">
+        <h2>Hey 💕 Dev ki Aradhana <span class="heartbeat">💗</span></h2>
+        <p>Welcome to my world!</p>
+        <button onclick="nextMessage()">Let's Go</button>
+    </div>
+
+<!-- Second Pop-up for the love question -->
+    <div id="lovePopup" class="popup" style="display: none;">
+        <p>Do you love me?</p>
+        <div class="button-container">
+            <button onclick="yesResponse()">Yes</button>
+            <button onclick="noResponse()">No</button>
+        </div>
+    </div>
+
+    <!-- Third Pop-up for the NO response -->
+    <div id="gifPopup" class="popup gif-popup" style="display: none;">
+        <img src="https://media.tenor.com/RiQyOcZtLoIAAAAj/tkthao219-bubududu.gif" alt="Angry response GIF">
+        <h2>Batau abhi <span class="knife">🔪🔪</span></h2>
+        <button onclick="closeGifPopup()">Close</button>
+    </div>
+
+    <!-- Fourth Pop-up for the YES response -->
+    <div id="yesPopup" class="popup gif-popup" style="display: none;">
+        <img src="https://media.tenor.com/RG_lIajbbtQAAAAj/milk-and-mocha.gif" alt="Cute response GIF">
+        <h2>Achaa ji 👀 fr to aapko suprise dena hoga <span class="heartbeat-fast">🤌🏻🤏🏻</span></h2>
+        <button onclick="openSurprise()">Open it</button>
+    </div>
+
+    <!-- Fifth Pop-up for Happy National Love Day -->
+    <div id="loveDayPopup" class="popup note-popup" style="display: none;">
+        <img src="https://media.tenor.com/4TSAv5_K3LgAAAAi/kiss-bear-kiss.gif" alt="Kiss Bear GIF">
+        <h2>Happy National Love Day, Aaru !</h2>
+        <p>Wishing you lots of love and happiness today! <span class="heartbeat-fast">🫀</span></p>
+        <button onclick="closeLoveDayPopup()">Close</button>
+    </div>
+
+    <!-- Audio player -->
+    <audio id="backgroundMusic" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Aadha%20Ishq%20-%20Instrumental_DHqPbs7MoEM.mp3" preload="auto" loop></audio>
+    <audio id="yesPopupSound" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Aww%20Sound%20Effect_ltjT25GyXTM.mp3" preload="auto"></audio>
+    <audio id="noPopupSound" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Mass%20Movie%20Sad%20BGM%20Ringtone_fDoPqTLEHBU.mp3" preload="auto"></audio>
+    <audio id="openItSound" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Gravity%20Falls%20-%20Mabifica%20kiss%20with%20cartoon%20sound%20effects_sfx.mp3" preload="auto" loop></audio>
+
+    <script>
+        // Global variable to hold the background music
+        const music = document.getElementById('backgroundMusic');
+
+        // Set initial volume for background music
+        music.volume = 0.3;
+
+        // Function to show the love question pop-up
+        function nextMessage() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('lovePopup').style.display = 'block';
+            music.play();
+        }
+
+        // Function to handle YES response
+        function yesResponse() {
+            document.getElementById('lovePopup').style.display = 'none';
+            document.getElementById('yesPopup').style.display = 'block';
+            document.getElementById('yesPopupSound').volume = 0.2; // Set volume for yes sound
+            document.getElementById('yesPopupSound').play(); // Play the yes sound
+        }
+
+        // Function to handle the surprise opening
+        function openSurprise() {
+            document.getElementById('yesPopup').style.display = 'none';
+            document.getElementById('loveDayPopup').style.display = 'block';
+            document.getElementById('openItSound').loop = true; // Loop open sound
+            document.getElementById('openItSound').volume = 0.2; // Set volume for open sound
+            document.getElementById('openItSound').play(); // Play the open sound
+            document.getElementById('yesPopupSound').pause(); // Stop yes sound immediately
+            document.getElementById('yesPopupSound').currentTime = 0; // Reset time
+        }
+
+        // Close love day popup and redirect to the first popup
+        function closeLoveDayPopup() {
+            document.getElementById('loveDayPopup').style.display = 'none';
+            document.getElementById('popup').style.display = 'block'; // Redirect to first popup
+            music.volume = 0.3; // Restore background music volume
+            document.getElementById('openItSound').pause(); // Stop the open sound immediately
+            document.getElementById('openItSound').currentTime = 0; // Reset time
+        }
+
+        // Handle No response and show NO popup
+        function noResponse() {
+            document.getElementById('lovePopup').style.display = 'none';
+            document.getElementById('gifPopup').style.display = 'block';
+            music.volume = 0.1; // Reduce background music volume when no popup opens
+            document.getElementById('noPopupSound').volume = 0.2; // Set volume for no sound
+            document.getElementById('noPopupSound').play(); // Play the no sound
+        }
+
+        // Close NO popup and return to the love question popup
+        function closeGifPopup() {
+            document.getElementById('noPopupSound').pause(); // Stop the no sound immediately
+            document.getElementById('noPopupSound').currentTime = 0; // Reset time
+            document.getElementById('gifPopup').style.display = 'none';
+            document.getElementById('lovePopup').style.display = 'block';
+            music.volume = 0.3; // Restore background music volume
+            music.play(); // Ensure background music plays
+        }
+
+        // Event listener for visibility change (when the browser/app is minimized)
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                // Resume playback if the document is visible
+                music.play().catch((error) => {
+                    console.log('Playback failed:', error);
+                });
+            } else {
+                // Pause the music if the document is hidden
+                music.pause();
+                document.getElementById('openItSound').pause(); // Stop open sound
+                document.getElementById('yesPopupSound').pause(); // Stop yes sound
+                document.getElementById('noPopupSound').pause(); // Stop no sound
+            }
+        });
+
+        // Play background music on page load
+        window.onload = function() {
+            music.play(); // Start background music
+        };
+    </script>
+</body>
+</html>
