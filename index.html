@@ -3,308 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page</title>
+    <title>Aaru-GPT</title>
     <style>
-        /* Reset */
-        * {
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap'); /* Add Roboto for chat text */
+
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            height: 100%;
+            font-family: 'Dancing Script', cursive;
+            background-color: #FFA19F;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
             overflow: hidden;
-            padding: 20px; /* Added padding for better mobile/tablet experience */
+            position: relative;
         }
 
-        /* Background with heartbeat animation */
-        .background {
-            position: absolute;
+        /* Welcome Popup Styling */
+        .welcome-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://img.freepik.com/free-vector/white-heart-pink-background_78370-4945.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727654400&semt=ais_hybrid') no-repeat center center fixed;
-            background-size: cover;
-            filter: blur(8px);
-            animation: heartbeat-bg 1.5s infinite;
-            z-index: -1;
+            background: linear-gradient(135deg, #FFD4DB, #EDCCD7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
         }
 
-        @keyframes heartbeat-bg {
-            0%, 100% {
-                transform: scale(1);
-            }
-            14%, 28% {
-                transform: scale(1.02);
-            }
-        }
-
-        /* Pop-up style */
-        .popup {
-            position: relative; /* Changed from fixed to relative */
-            margin: auto; /* Centering */
-            background: #FFD4DB;
-            border-radius: 15px;
-            padding: 20px;
+        .welcome-message {
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-            width: 90%; /* Changed to 90% for better mobile/tablet sizing */
-            max-width: 500px; /* Increased max-width for tablet experience */
+            padding: 20px;
+            border-radius: 20px;
+            background-color: #EDCCD7;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+        .welcome-message h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #444;
         }
 
-        .popup h2 {
-            font-size: 24px;
-            font-weight: bold;
+        .welcome-message p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .get-started-btn {
+            padding: 15px 30px;
+            background-color: #FFA19F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Home screen styling */
+        .home-screen {
+            text-align: center;
+            color: gray;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .home-screen h1 {
+            font-size: 36px;
             color: gray;
             margin-bottom: 10px;
         }
 
-        .popup p {
+        .home-screen p {
             font-size: 18px;
-            font-weight: bold;
+            margin: 5px 20px;
             color: gray;
-            margin-bottom: 20px;
         }
 
-        .popup button {
-            padding: 10px 20px;
-            background-color: #ff69b4;
-            border: none;
-            border-radius: 5px;
+        .home-screen .teddy {
+            margin: 20px 0;
+            width: 200px;
+            height: auto;
+        }
+
+        .home-screen .scan-message {
+            font-size: 18px;
+            color: gray;
+            margin-top: 10px;
+        }
+
+        .home-screen .scan-button {
+            background-color: #E79E99;
             color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 16px;
+            margin-top: 10px;
             transition: background-color 0.3s;
-            margin: 5px;
         }
 
-        .popup button:hover {
-            background-color: #ff85a2;
+        .home-screen .scan-button:hover {
+            background-color: #C87A76;
         }
 
-        /* Pop-up for the angry response */
-        .gif-popup img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 15px;
+        /* Input Area for Chat */
+        .input-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 20px;
         }
 
-        /* Cartoon note popup */
-        .note-popup {
-            width: 90%; /* Same as popup */
-            max-width: 500px; /* Increased max-width for tablet experience */
-            animation: fadeIn 0.5s forwards;
+        .input-field {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #E79E99;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            margin-right: 10px;
         }
 
-        .note-popup img {
-            max-width: 100%;
-            height: auto;
+        .send-button {
+            background-color: #C87A76;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        /* Emoji animations */
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            14%, 28% {
-                transform: scale(1.1);
-            }
+        .send-button:hover {
+            background-color: #E79E99;
         }
 
-        @keyframes flower-animation {
-            0% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0);
-            }
+        .hidden {
+            display: none;
         }
 
-        @keyframes knife-shake {
-            0%, 100% {
-                transform: rotate(0deg);
-            }
-            50% {
-                transform: rotate(10deg);
-            }
+        /* Chat area styling */
+        .chat-area {
+            position: fixed;
+            width: 400px;
+            height: 500px;
+            display: none;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            z-index: 1001;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centering */
+            font-family: 'Roboto', sans-serif; /* Only chat text */
         }
 
-        .heartbeat {
-            display: inline-block;
-            animation: heartbeat 1.5s infinite;
+  .chat-header {
+    background-color: #E79E99;
+    color: white;
+    padding: 10px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Dancing Script', cursive; /* Change this line to match home screen */
+}
+
+        .chat-header h3 {
+            margin: 0;
         }
 
-        .flower {
-            display: inline-block;
-            animation: flower-animation 1s infinite;
+        .chat-header button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
         }
 
-        .knife {
-            display: inline-block;
-            animation: knife-shake 0.5s infinite;
+        .chat-content {
+    padding: 10px;
+    background-color: #f9f9f9; /* Light background */
+    flex-grow: 1; /* Take up remaining space */
+    overflow-y: auto; /* Enable scrolling for messages */
+    display: flex;
+    flex-direction: column; /* Stack messages vertically */
+}
+/* Simplified User message styling */
+.user-message {
+    background-color: #79C7C5; /* Primary color for user messages */
+    color: white; /* Text color for user messages */
+    align-self: flex-end; /* Align user messages to the right */
+    padding: 10px 15px; /* Padding for bubbles */
+    border-radius: 20px; /* Rounded corners */
+    max-width: 75%; /* Maximum width for messages */
+    margin: 5px 0; /* Space between messages */
+    position: relative; /* Allow pseudo elements for shadows */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+/* Simplified Bot message styling */
+.bot-message {
+    background-color: #f0f0f0; /* Light gray for bot messages */
+    color: black; /* Text color for bot messages */
+    align-self: flex-start; /* Align bot messages to the left */
+    padding: 10px 15px; /* Padding for bubbles */
+    border-radius: 20px; /* Rounded corners */
+    max-width: 75%; /* Maximum width for messages */
+    margin: 5px 0; /* Space between messages */
+    position: relative; /* Allow pseudo elements for shadows */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex; /* Flex to align dots */
+    align-items: center; /* Center vertically */
+}
+
+/* Dots for Typing Animation */
+.dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #79C7C5; /* Primary color */
+    border-radius: 50%; /* Circular dots */
+    animation: bounce 0.5s infinite alternate; /* Bounce animation */
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s; /* Delay for the second dot */
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s; /* Delay for the third dot */
+}
+
+/* Fade-in for new messages */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Apply fade-in animation when messages are added */
+.message {
+    animation: fadeIn 0.3s ease forwards; /* Fade-in animation */
+}
+
+
+
+
+        .input-container-chat {
+            display: flex;
+            padding: 10px;
+            background-color: #E79E99;
+            border-radius: 0 0 20px 20px;
         }
 
-        /* Heartbeat animation for the 🫀 emoji */
-        .heartbeat-fast {
-            display: inline-block;
-            animation: heartbeat-fast 0.8s infinite;
+        .input-container-chat input {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            margin-right: 10px;
+            outline: none;
+            font-size: 16px;
         }
 
-        @keyframes heartbeat-fast {
-            0%, 100% {
-                transform: scale(1);
-            }
-            25%, 75% {
-                transform: scale(1.1);
-            }
+        .input-container-chat button {
+            background-color: #C87A76;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
         }
+
     </style>
 </head>
 <body>
 
-    <div class="background"></div>
-
-    <!-- First Pop-up -->
-    <div id="popup" class="popup">
-        <h2>Hey 💕 Dev ki Aradhana <span class="heartbeat">💗</span></h2>
-        <p>Welcome to my world!</p>
-        <button onclick="nextMessage()">Let's Go</button>
-    </div>
-
-<!-- Second Pop-up for the love question -->
-    <div id="lovePopup" class="popup" style="display: none;">
-        <p>Do you love me?</p>
-        <div class="button-container">
-            <button onclick="yesResponse()">Yes</button>
-            <button onclick="noResponse()">No</button>
+    <!-- Welcome Popup -->
+    <div class="welcome-popup" id="welcomePopup">
+        <div class="welcome-message">
+            <h1>Welcome to Aaru-GPT!</h1>
+            <p>How may I help you? 🫶🏻</p>
+            <button class="get-started-btn" id="getStartedBtn">Get Started</button>
         </div>
     </div>
 
-    <!-- Third Pop-up for the NO response -->
-    <div id="gifPopup" class="popup gif-popup" style="display: none;">
-        <img src="https://media.tenor.com/RiQyOcZtLoIAAAAj/tkthao219-bubududu.gif" alt="Angry response GIF">
-        <h2>Batau abhi <span class="knife">🔪🔪</span></h2>
-        <button onclick="closeGifPopup()">Close</button>
+    <!-- Home Screen -->
+    <div class="home-screen hidden" id="homeScreen">
+        <h1>Welcome to Aaru-GPT!</h1>
+        <p>Aaru AI helps you scan book pages and generates all types of questions.</p>
+        <p>You can ask anything, download PDFs, and much more!</p>
+
+        <!-- Teddy GIF -->
+        <img src="https://media.tenor.com/DJZg821DI_IAAAAi/peach-goma-pc-bag-wiggling-paws.gif" alt="Teddy" class="teddy">
+
+        <!-- Scan Button Message -->
+        <p class="scan-message">Click below to scan a book page and get all questions!</p>
+
+        <!-- Scan button -->
+        <button class="scan-button" id="scanButton">Scan a book page</button>
+
+        <!-- Input Area for Chat -->
+        <div class="input-container">
+            <input type="text" class="input-field" id="chatInputField" placeholder="Ask Aaru anything!">
+            <button class="send-button" id="openChatBtn">Send</button>
+        </div>
     </div>
 
-    <!-- Fourth Pop-up for the YES response -->
-    <div id="yesPopup" class="popup gif-popup" style="display: none;">
-        <img src="https://media.tenor.com/RG_lIajbbtQAAAAj/milk-and-mocha.gif" alt="Cute response GIF">
-        <h2>Achaa ji 👀 fr to aapko suprise dena hoga <span class="heartbeat-fast">🤌🏻🤏🏻</span></h2>
-        <button onclick="openSurprise()">Open it</button>
+    <!-- Chat Box -->
+    <div class="chat-area" id="chatArea">
+        <div class="chat-header">
+            <h3>Aaru-GPT Chat</h3>
+            <button id="closeChatBtn">Close</button>
+        </div>
+               <div class="chat-content" id="chatContent"></div>
+        <div class="input-container-chat">
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button id="sendMsgBtn">Send</button>
+        </div>
     </div>
-
-    <!-- Fifth Pop-up for Happy National Love Day -->
-    <div id="loveDayPopup" class="popup note-popup" style="display: none;">
-        <img src="https://media.tenor.com/4TSAv5_K3LgAAAAi/kiss-bear-kiss.gif" alt="Kiss Bear GIF">
-        <h2>Happy National Love Day, Aaru !</h2>
-        <p>Wishing you lots of love and happiness today! <span class="heartbeat-fast">🫀</span></p>
-        <button onclick="closeLoveDayPopup()">Close</button>
-    </div>
-
-    <!-- Audio player -->
-    <audio id="backgroundMusic" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Aadha%20Ishq%20-%20Instrumental_DHqPbs7MoEM.mp3" preload="auto" loop></audio>
-    <audio id="yesPopupSound" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Aww%20Sound%20Effect_ltjT25GyXTM.mp3" preload="auto"></audio>
-    <audio id="noPopupSound" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Mass%20Movie%20Sad%20BGM%20Ringtone_fDoPqTLEHBU.mp3" preload="auto"></audio>
-    <audio id="openItSound" src="https://archive.org/download/aadha-ishq-instrumental-dhq-pbs-7-mo-em/Gravity%20Falls%20-%20Mabifica%20kiss%20with%20cartoon%20sound%20effects_sfx.mp3" preload="auto" loop></audio>
 
     <script>
-        // Global variable to hold the background music
-        const music = document.getElementById('backgroundMusic');
+        const welcomePopup = document.getElementById('welcomePopup');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const homeScreen = document.getElementById('homeScreen');
+        const openChatBtn = document.getElementById('openChatBtn');
+        const chatArea = document.getElementById('chatArea');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatContent = document.getElementById('chatContent');
+        const chatInputField = document.getElementById('chatInputField');
+        const sendMsgBtn = document.getElementById('sendMsgBtn');
+        const chatInput = document.getElementById('chatInput');
 
-        // Set initial volume for background music
-        music.volume = 0.3;
-
-        // Function to show the love question pop-up
-        function nextMessage() {
-            document.getElementById('popup').style.display = 'none';
-            document.getElementById('lovePopup').style.display = 'block';
-            music.play();
-        }
-
-        // Function to handle YES response
-        function yesResponse() {
-            document.getElementById('lovePopup').style.display = 'none';
-            document.getElementById('yesPopup').style.display = 'block';
-            document.getElementById('yesPopupSound').volume = 0.2; // Set volume for yes sound
-            document.getElementById('yesPopupSound').play(); // Play the yes sound
-        }
-
-        // Function to handle the surprise opening
-        function openSurprise() {
-            document.getElementById('yesPopup').style.display = 'none';
-            document.getElementById('loveDayPopup').style.display = 'block';
-            document.getElementById('openItSound').loop = true; // Loop open sound
-            document.getElementById('openItSound').volume = 0.2; // Set volume for open sound
-            document.getElementById('openItSound').play(); // Play the open sound
-            document.getElementById('yesPopupSound').pause(); // Stop yes sound immediately
-            document.getElementById('yesPopupSound').currentTime = 0; // Reset time
-        }
-
-        // Close love day popup and redirect to the first popup
-        function closeLoveDayPopup() {
-            document.getElementById('loveDayPopup').style.display = 'none';
-            document.getElementById('popup').style.display = 'block'; // Redirect to first popup
-            music.volume = 0.3; // Restore background music volume
-            document.getElementById('openItSound').pause(); // Stop the open sound immediately
-            document.getElementById('openItSound').currentTime = 0; // Reset time
-        }
-
-        // Handle No response and show NO popup
-        function noResponse() {
-            document.getElementById('lovePopup').style.display = 'none';
-            document.getElementById('gifPopup').style.display = 'block';
-            music.volume = 0.1; // Reduce background music volume when no popup opens
-            document.getElementById('noPopupSound').volume = 0.2; // Set volume for no sound
-            document.getElementById('noPopupSound').play(); // Play the no sound
-        }
-
-        // Close NO popup and return to the love question popup
-        function closeGifPopup() {
-            document.getElementById('noPopupSound').pause(); // Stop the no sound immediately
-            document.getElementById('noPopupSound').currentTime = 0; // Reset time
-            document.getElementById('gifPopup').style.display = 'none';
-            document.getElementById('lovePopup').style.display = 'block';
-            music.volume = 0.3; // Restore background music volume
-            music.play(); // Ensure background music plays
-        }
-
-        // Event listener for visibility change (when the browser/app is minimized)
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState === 'visible') {
-                // Resume playback if the document is visible
-                music.play().catch((error) => {
-                    console.log('Playback failed:', error);
-                });
-            } else {
-                // Pause the music if the document is hidden
-                music.pause();
-                document.getElementById('openItSound').pause(); // Stop open sound
-                document.getElementById('yesPopupSound').pause(); // Stop yes sound
-                document.getElementById('noPopupSound').pause(); // Stop no sound
-            }
+        // Hide the welcome popup and show the home screen when "Get Started" is clicked
+        getStartedBtn.addEventListener('click', () => {
+            welcomePopup.style.opacity = '0'; // Fade out
+            setTimeout(() => {
+                welcomePopup.style.display = 'none'; // Hide after fade-out
+                homeScreen.classList.remove('hidden'); // Show home screen
+            }, 500); // Match the duration of the fade-out
         });
 
-        // Play background music on page load
-        window.onload = function() {
-            music.play(); // Start background music
-        };
+// Open chat and transfer input area text to chatbox as user message
+openChatBtn.addEventListener('click', () => {
+    chatArea.style.display = 'flex'; // Show chat area
+    homeScreen.classList.add('hidden'); // Hide home screen
+
+    // Add dummy input text as the first message in the chatbox
+    const userMessage = chatInputField.value.trim();
+    if (userMessage !== '') {
+        const userMessageElem = document.createElement('div');
+        userMessageElem.classList.add('message', 'user-message');
+        userMessageElem.textContent = userMessage;
+        chatContent.appendChild(userMessageElem);
+        chatInputField.value = ''; // Clear the dummy input
+    }
+});
+
+
+        // Close chat and show main content
+        closeChatBtn.addEventListener('click', () => {
+            chatArea.style.display = 'none'; // Hide chat area
+            homeScreen.classList.remove('hidden'); // Show home screen
+        });
+
+        // Handle message sending
+        sendMsgBtn.addEventListener('click', () => {
+            const userMessage = chatInput.value.trim();
+            if (userMessage !== '') {
+                // Add user message to chat
+                const userMessageElem = document.createElement('div');
+                userMessageElem.classList.add('message', 'user-message');
+                userMessageElem.textContent = userMessage;
+                chatContent.appendChild(userMessageElem);
+
+                // Simulate bot response
+                const botMessageElem = document.createElement('div');
+                botMessageElem.classList.add('message', 'bot-message');
+                botMessageElem.textContent = 'Let me think...'; // Placeholder for now
+                chatContent.appendChild(botMessageElem);
+
+                chatInput.value = ''; // Clear input
+            }
+        });
     </script>
 </body>
 </html>
