@@ -381,9 +381,8 @@
         // Optionally maintain the input message state on close
         // chatInput.value = ''; // Uncomment if you want to clear input on close
     });
-
-    // Send Message
-    sendMessageBtn.addEventListener('click', () => {
+// Send Message
+sendMessageBtn.addEventListener('click', () => {
     const userMessage = chatInput.value;
     if (userMessage.trim()) {
         addUserMessage(userMessage);
@@ -400,7 +399,7 @@
         .then(response => response.json())
         .then(data => {
             // Process data from your server and display the bot's response
-            const botMessage = data.choices[0].delta.content; // Adjust based on actual response structure
+            const botMessage = data.choices[0]?.delta?.content || "No response"; // Adjust based on actual response structure
             addBotMessage(botMessage);
         })
         .catch(error => {
@@ -409,6 +408,7 @@
         });
     }
 });
+
 
     // Function to add user message
     function addUserMessage(message) {
