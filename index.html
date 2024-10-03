@@ -173,16 +173,16 @@
             font-family: 'Roboto', sans-serif; /* Only chat text */
         }
 
-  .chat-header {
-    background-color: #E79E99;
-    color: white;
-    padding: 10px;
-    border-radius: 20px 20px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Dancing Script', cursive; /* Change this line to match home screen */
-}
+        .chat-header {
+            background-color: #E79E99;
+            color: white;
+            padding: 10px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Dancing Script', cursive; /* Change this line to match home screen */
+        }
 
         .chat-header h3 {
             margin: 0;
@@ -197,80 +197,37 @@
         }
 
         .chat-content {
-    padding: 10px;
-    background-color: #f9f9f9; /* Light background */
-    flex-grow: 1; /* Take up remaining space */
-    overflow-y: auto; /* Enable scrolling for messages */
-    display: flex;
-    flex-direction: column; /* Stack messages vertically */
-}
-/* Simplified User message styling */
-.user-message {
-    background-color: #79C7C5; /* Primary color for user messages */
-    color: white; /* Text color for user messages */
-    align-self: flex-end; /* Align user messages to the right */
-    padding: 10px 15px; /* Padding for bubbles */
-    border-radius: 20px; /* Rounded corners */
-    max-width: 75%; /* Maximum width for messages */
-    margin: 5px 0; /* Space between messages */
-    position: relative; /* Allow pseudo elements for shadows */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-}
+            padding: 10px;
+            background-color: #f9f9f9;
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Simplified Bot message styling */
-.bot-message {
-    background-color: #f0f0f0; /* Light gray for bot messages */
-    color: black; /* Text color for bot messages */
-    align-self: flex-start; /* Align bot messages to the left */
-    padding: 10px 15px; /* Padding for bubbles */
-    border-radius: 20px; /* Rounded corners */
-    max-width: 75%; /* Maximum width for messages */
-    margin: 5px 0; /* Space between messages */
-    position: relative; /* Allow pseudo elements for shadows */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-}
+        .user-message {
+            background-color: #79C7C5;
+            color: white;
+            align-self: flex-end;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 75%;
+            margin: 5px 0;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
-/* Typing Indicator */
-.typing-indicator {
-    display: flex; /* Flex to align dots */
-    align-items: center; /* Center vertically */
-}
-
-/* Dots for Typing Animation */
-.dot {
-    width: 8px;
-    height: 8px;
-    margin: 0 2px;
-    background-color: #79C7C5; /* Primary color */
-    border-radius: 50%; /* Circular dots */
-    animation: bounce 0.5s infinite alternate; /* Bounce animation */
-}
-
-.dot:nth-child(2) {
-    animation-delay: 0.2s; /* Delay for the second dot */
-}
-
-.dot:nth-child(3) {
-    animation-delay: 0.4s; /* Delay for the third dot */
-}
-
-/* Fade-in for new messages */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Apply fade-in animation when messages are added */
-.message {
-    animation: fadeIn 0.3s ease forwards; /* Fade-in animation */
-}
-
-
-
+        .bot-message {
+            background-color: #f0f0f0;
+            color: black;
+            align-self: flex-start;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 75%;
+            margin: 5px 0;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
         .input-container-chat {
             display: flex;
@@ -298,7 +255,6 @@
             font-size: 16px;
             cursor: pointer;
         }
-
     </style>
 </head>
 <body>
@@ -334,82 +290,107 @@
         </div>
     </div>
 
-    <!-- Chat Box -->
+    <!-- Chat Area -->
     <div class="chat-area" id="chatArea">
         <div class="chat-header">
-            <h3>Aaru-GPT Chat</h3>
-            <button id="closeChatBtn">Close</button>
+            <h3>Aaru AI</h3>
+            <button id="closeChatBtn">✖</button>
         </div>
-               <div class="chat-content" id="chatContent"></div>
+
+        <div class="chat-content" id="chatContent"></div>
+
         <div class="input-container-chat">
-            <input type="text" id="chatInput" placeholder="Type your message...">
-            <button id="sendMsgBtn">Send</button>
+            <input type="text" id="chatInput" placeholder="Ask me anything...">
+            <button id="sendMessageBtn">Send</button>
         </div>
     </div>
 
     <script>
+        // Welcome popup logic
         const welcomePopup = document.getElementById('welcomePopup');
         const getStartedBtn = document.getElementById('getStartedBtn');
         const homeScreen = document.getElementById('homeScreen');
-        const openChatBtn = document.getElementById('openChatBtn');
         const chatArea = document.getElementById('chatArea');
-        const closeChatBtn = document.getElementById('closeChatBtn');
-        const chatContent = document.getElementById('chatContent');
         const chatInputField = document.getElementById('chatInputField');
-        const sendMsgBtn = document.getElementById('sendMsgBtn');
+        const openChatBtn = document.getElementById('openChatBtn');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const chatContent = document.getElementById('chatContent');
         const chatInput = document.getElementById('chatInput');
 
-        // Hide the welcome popup and show the home screen when "Get Started" is clicked
+        // Close Welcome Popup and show Home Screen
         getStartedBtn.addEventListener('click', () => {
-            welcomePopup.style.opacity = '0'; // Fade out
+            welcomePopup.style.opacity = 0;
             setTimeout(() => {
-                welcomePopup.style.display = 'none'; // Hide after fade-out
-                homeScreen.classList.remove('hidden'); // Show home screen
-            }, 500); // Match the duration of the fade-out
+                welcomePopup.style.display = 'none';
+                homeScreen.classList.remove('hidden');
+            }, 500);
         });
 
-// Open chat and transfer input area text to chatbox as user message
-openChatBtn.addEventListener('click', () => {
-    chatArea.style.display = 'flex'; // Show chat area
-    homeScreen.classList.add('hidden'); // Hide home screen
+        // Open Chat Area
+        openChatBtn.addEventListener('click', () => {
+            chatArea.style.display = 'flex';
+            chatContent.innerHTML = ''; // Clear previous chats
+            addBotMessage("Hello! How can I assist you today?");
+        });
 
-    // Add dummy input text as the first message in the chatbox
-    const userMessage = chatInputField.value.trim();
-    if (userMessage !== '') {
-        const userMessageElem = document.createElement('div');
-        userMessageElem.classList.add('message', 'user-message');
-        userMessageElem.textContent = userMessage;
-        chatContent.appendChild(userMessageElem);
-        chatInputField.value = ''; // Clear the dummy input
-    }
-});
-
-
-        // Close chat and show main content
+        // Close Chat Area
         closeChatBtn.addEventListener('click', () => {
-            chatArea.style.display = 'none'; // Hide chat area
-            homeScreen.classList.remove('hidden'); // Show home screen
+            chatArea.style.display = 'none';
         });
 
-        // Handle message sending
-        sendMsgBtn.addEventListener('click', () => {
-            const userMessage = chatInput.value.trim();
-            if (userMessage !== '') {
-                // Add user message to chat
-                const userMessageElem = document.createElement('div');
-                userMessageElem.classList.add('message', 'user-message');
-                userMessageElem.textContent = userMessage;
-                chatContent.appendChild(userMessageElem);
+        // Send Message
+        sendMessageBtn.addEventListener('click', () => {
+            const userMessage = chatInput.value;
+            if (userMessage.trim()) {
+                addUserMessage(userMessage);
+                // Clear input
+                chatInput.value = '';
 
-                // Simulate bot response
-                const botMessageElem = document.createElement('div');
-                botMessageElem.classList.add('message', 'bot-message');
-                botMessageElem.textContent = 'Let me think...'; // Placeholder for now
-                chatContent.appendChild(botMessageElem);
-
-                chatInput.value = ''; // Clear input
+                // Call the OpenAI API or use a local response (mock)
+                // In case of OpenAI, you'll need to use fetch or XMLHttpRequest
+                fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer YOUR_OPENAI_API_KEY'
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            { role: 'system', content: 'You are Aaru-GPT, an assistant for all tasks.' },
+                            { role: 'user', content: userMessage }
+                        ]
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botMessage = data.choices[0].message.content;
+                    addBotMessage(botMessage);
+                })
+                .catch(error => {
+                    addBotMessage("I'm sorry, something went wrong. Please try again.");
+                });
             }
         });
+
+        // Function to add user message
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('user-message');
+            messageDiv.textContent = message;
+            chatContent.appendChild(messageDiv);
+            chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+        }
+
+        // Function to add bot message
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('bot-message');
+            messageDiv.textContent = message;
+            chatContent.appendChild(messageDiv);
+            chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+        }
     </script>
 </body>
 </html>
