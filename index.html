@@ -253,8 +253,8 @@
             /* Mobile devices */
             .chat-area {
                 width: 90%;
-                height: 90%;
-                border-radius: 10px;
+                height: 80%;
+                border-radius: 0px;
                 top: 20%;
                 left: 5%;
                 transform: none;
@@ -333,71 +333,85 @@
     </div>
 
     <script>
-        // Welcome popup logic
-        const welcomePopup = document.getElementById('welcomePopup');
-        const getStartedBtn = document.getElementById('getStartedBtn');
-        const homeScreen = document.getElementById('homeScreen');
-        const chatArea = document.getElementById('chatArea');
-        const openChatBtn = document.getElementById('openChatBtn');
-        const closeChatBtn = document.getElementById('closeChatBtn');
-        const sendMessageBtn = document.getElementById('sendMessageBtn');
-        const chatContent = document.getElementById('chatContent');
-        const chatInput = document.getElementById('chatInput');
+    // Welcome popup logic
+    const welcomePopup = document.getElementById('welcomePopup');
+    const getStartedBtn = document.getElementById('getStartedBtn');
+    const homeScreen = document.getElementById('homeScreen');
+    const chatArea = document.getElementById('chatArea');
+    const openChatBtn = document.getElementById('openChatBtn');
+    const closeChatBtn = document.getElementById('closeChatBtn');
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const chatContent = document.getElementById('chatContent');
+    const chatInput = document.getElementById('chatInput');
 
-        // Close Welcome Popup and show Home Screen
-        getStartedBtn.addEventListener('click', () => {
-            welcomePopup.style.opacity = 0;
+    // Flag to track if chat has been opened before
+    let isChatOpenedFirstTime = true;
+
+    // Close Welcome Popup and show Home Screen
+    getStartedBtn.addEventListener('click', () => {
+        welcomePopup.style.opacity = 0;
+        setTimeout(() => {
+            welcomePopup.style.display = 'none';
+            homeScreen.classList.remove('hidden');
+        }, 500);
+    });
+
+    // Open Chat Area and hide everything else
+    openChatBtn.addEventListener('click', () => {
+        chatArea.style.display = 'flex';
+        homeScreen.style.display = 'none'; // Hide home screen when chat opens
+        
+        // Clear input field only if it's the first time opening chat
+        if (isChatOpenedFirstTime) {
+            chatInput.value = ''; // Only clear input on the first open
+            isChatOpenedFirstTime = false; // Set flag to false after first open
+        }
+
+        // Add welcome message to the chat
+        addBotMessage("Hello! How can I assist you today?");
+    });
+
+    // Close Chat Area and show home screen again
+    closeChatBtn.addEventListener('click', () => {
+        chatArea.style.display = 'none';
+        homeScreen.style.display = 'block'; // Show home screen when chat closes
+        
+        // Optionally maintain the input message state on close
+        // chatInput.value = ''; // Uncomment if you want to clear input on close
+    });
+
+    // Send Message
+    sendMessageBtn.addEventListener('click', () => {
+        const userMessage = chatInput.value;
+        if (userMessage.trim()) {
+            addUserMessage(userMessage);
+            chatInput.value = ''; // Clear input after sending the message
+
+            // Simulate bot response (replace with API call)
             setTimeout(() => {
-                welcomePopup.style.display = 'none';
-                homeScreen.classList.remove('hidden');
-            }, 500);
-        });
-
-        // Open Chat Area and hide everything else
-        openChatBtn.addEventListener('click', () => {
-            chatArea.style.display = 'flex';
-            homeScreen.style.display = 'none'; // Hide home screen when chat opens
-            chatContent.innerHTML = ''; // Clear previous chats
-            addBotMessage("Hello! How can I assist you today?");
-        });
-
-        // Close Chat Area and show home screen again
-        closeChatBtn.addEventListener('click', () => {
-            chatArea.style.display = 'none';
-            homeScreen.style.display = 'block'; // Show home screen when chat closes
-        });
-
-        // Send Message
-        sendMessageBtn.addEventListener('click', () => {
-            const userMessage = chatInput.value;
-            if (userMessage.trim()) {
-                addUserMessage(userMessage);
-                chatInput.value = ''; // Clear input
-
-                // Simulate bot response (replace with API call)
-                setTimeout(() => {
-                    addBotMessage("This is a mock response.");
-                }, 1000);
-            }
-        });
-
-        // Function to add user message
-        function addUserMessage(message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('user-message');
-            messageDiv.textContent = message;
-            chatContent.appendChild(messageDiv);
-            chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+                addBotMessage("This is a mock response.");
+            }, 1000);
         }
+    });
 
-        // Function to add bot message
-        function addBotMessage(message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('bot-message');
-            messageDiv.textContent = message;
-            chatContent.appendChild(messageDiv);
-            chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
-        }
-    </script>
+    // Function to add user message
+    function addUserMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('user-message');
+        messageDiv.textContent = message;
+        chatContent.appendChild(messageDiv);
+        chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+    }
+
+    // Function to add bot message
+    function addBotMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('bot-message');
+        messageDiv.textContent = message;
+        chatContent.appendChild(messageDiv);
+        chatContent.scrollTop = chatContent.scrollHeight; // Scroll to bottom
+    }
+</script>
+
 </body>
 </html>
