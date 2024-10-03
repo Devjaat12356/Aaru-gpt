@@ -9,13 +9,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "@huggingface/inference": "^2.3.0",   // Add Hugging Face API
-    "next": "latest",                     // Next.js framework
-    "react": "latest",                    // React library
-    "react-dom": "latest"                 // React DOM for rendering
+    "@huggingface/inference": "^2.3.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
   },
   "engines": {
-    "node": ">=14.0.0"                    // Ensure the correct Node.js version
+    "node": ">=14.0.0"
   },
   "license": "MIT"
 }
