@@ -1,11 +1,21 @@
 {
   "name": "aaru-gpt",
   "version": "1.0.0",
+  "description": "A simple chatbot using Hugging Face's LLaMA model on Vercel",
   "main": "index.js",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1"
-  }
+    "@huggingface/inference": "^2.3.0",   // Add Hugging Face API
+    "next": "latest",                     // Next.js framework
+    "react": "latest",                    // React library
+    "react-dom": "latest"                 // React DOM for rendering
+  },
+  "engines": {
+    "node": ">=14.0.0"                    // Ensure the correct Node.js version
+  },
+  "license": "MIT"
 }
