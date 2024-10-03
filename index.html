@@ -384,17 +384,31 @@
 
     // Send Message
     sendMessageBtn.addEventListener('click', () => {
-        const userMessage = chatInput.value;
-        if (userMessage.trim()) {
-            addUserMessage(userMessage);
-            chatInput.value = ''; // Clear input after sending the message
+    const userMessage = chatInput.value;
+    if (userMessage.trim()) {
+        addUserMessage(userMessage);
+        chatInput.value = ''; // Clear input after sending the message
 
-            // Simulate bot response (replace with API call)
-            setTimeout(() => {
-                addBotMessage("This is a mock response.");
-            }, 1000);
-        }
-    });
+        // Send message to your Vercel serverless function
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Process data from your server and display the bot's response
+            const botMessage = data.choices[0].delta.content; // Adjust based on actual response structure
+            addBotMessage(botMessage);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            addBotMessage("Sorry, something went wrong.");
+        });
+    }
+});
 
     // Function to add user message
     function addUserMessage(message) {
