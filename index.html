@@ -78,6 +78,10 @@
             z-index: 1;
         }
 
+        .hidden {
+            display: none;
+        }
+
         .home-screen h1 {
             font-size: 36px;
             color: gray;
@@ -152,10 +156,6 @@
             background-color: #E79E99;
         }
 
-        .hidden {
-            display: none;
-        }
-
         /* Chat area styling */
         .chat-area {
             position: fixed;
@@ -181,7 +181,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: 'Dancing Script', cursive; /* Change this line to match home screen */
+            font-family: 'Dancing Script', cursive;
         }
 
         .chat-header h3 {
@@ -205,28 +205,25 @@
             flex-direction: column;
         }
 
+        .user-message, .bot-message {
+            max-width: 75%;
+            margin: 5px 0;
+            padding: 10px 15px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
         .user-message {
             background-color: #79C7C5;
             color: white;
             align-self: flex-end;
-            padding: 10px 15px;
-            border-radius: 20px;
-            max-width: 75%;
-            margin: 5px 0;
-            position: relative;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .bot-message {
             background-color: #f0f0f0;
             color: black;
             align-self: flex-start;
-            padding: 10px 15px;
-            border-radius: 20px;
-            max-width: 75%;
-            margin: 5px 0;
-            position: relative;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .input-container-chat {
@@ -255,6 +252,26 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        /* Responsive Design for Mobile Devices */
+        @media screen and (max-width: 768px) {
+            .chat-area {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                top: 0;
+                left: 0;
+                transform: none;
+            }
+
+            .chat-header {
+                border-radius: 0;
+            }
+
+            .chat-content {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -269,7 +286,7 @@
     </div>
 
     <!-- Home Screen -->
-    <div class="home-screen hidden" id="homeScreen">
+    <div class="home-screen" id="homeScreen">
         <h1>Welcome to Aaru-GPT!</h1>
         <p>Aaru AI helps you scan book pages and generates all types of questions.</p>
         <p>You can ask anything, download PDFs, and much more!</p>
@@ -285,8 +302,8 @@
 
         <!-- Input Area for Chat -->
         <div class="input-container">
-            <input type="text" class="input-field" id="chatInputField" placeholder="Ask Aaru anything!">
-            <button class="send-button" id="openChatBtn">Send</button>
+            <input type="text" class="input-field" id="chatInputField" placeholder="Enter your question...">
+            <button class="send-button" id="openChatBtn">Ask!</button>
         </div>
     </div>
 
@@ -311,7 +328,6 @@
         const getStartedBtn = document.getElementById('getStartedBtn');
         const homeScreen = document.getElementById('homeScreen');
         const chatArea = document.getElementById('chatArea');
-        const chatInputField = document.getElementById('chatInputField');
         const openChatBtn = document.getElementById('openChatBtn');
         const closeChatBtn = document.getElementById('closeChatBtn');
         const sendMessageBtn = document.getElementById('sendMessageBtn');
@@ -327,16 +343,18 @@
             }, 500);
         });
 
-        // Open Chat Area
+        // Open Chat Area and hide everything else
         openChatBtn.addEventListener('click', () => {
             chatArea.style.display = 'flex';
+            homeScreen.style.display = 'none'; // Hide home screen when chat opens
             chatContent.innerHTML = ''; // Clear previous chats
             addBotMessage("Hello! How can I assist you today?");
         });
 
-        // Close Chat Area
+        // Close Chat Area and show home screen again
         closeChatBtn.addEventListener('click', () => {
             chatArea.style.display = 'none';
+            homeScreen.style.display = 'block'; // Show home screen when chat closes
         });
 
         // Send Message
@@ -344,33 +362,12 @@
             const userMessage = chatInput.value;
             if (userMessage.trim()) {
                 addUserMessage(userMessage);
-                // Clear input
-                chatInput.value = '';
+                chatInput.value = ''; // Clear input
 
-                // Call the OpenAI API or use a local response (mock)
-                // In case of OpenAI, you'll need to use fetch or XMLHttpRequest
-                fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer YOUR_OPENAI_API_KEY'
-                    },
-                    body: JSON.stringify({
-                        model: 'gpt-3.5-turbo',
-                        messages: [
-                            { role: 'system', content: 'You are Aaru-GPT, an assistant for all tasks.' },
-                            { role: 'user', content: userMessage }
-                        ]
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const botMessage = data.choices[0].message.content;
-                    addBotMessage(botMessage);
-                })
-                .catch(error => {
-                    addBotMessage("I'm sorry, something went wrong. Please try again.");
-                });
+                // Simulate bot response (replace with API call)
+                setTimeout(() => {
+                    addBotMessage("This is a mock response.");
+                }, 1000);
             }
         });
 
